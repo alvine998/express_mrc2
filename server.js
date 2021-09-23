@@ -1,10 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const app = express();
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
+
+var corsOptions = {
+    origin: "http://localhost:8081"
+};
+
+app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
@@ -30,11 +36,14 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
+global.__basedir = __dirname;
+
 // Require Notes routes
 require('./app/routes/note.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
+require('./app/routes/order.routes.js')(app);
 
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(4000, () => {
+    console.log("Server is listening on port 4000");
 });
