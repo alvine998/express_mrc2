@@ -59,7 +59,7 @@ exports.findOne = (req, res) => {
     .then(user => {
         if(!user) {
             return res.status(404).send({
-                message: "User not found with id " + req.params.emails
+                message: "Email not found with id " + req.params.emails
             });            
         }
         res.send(user);
@@ -71,6 +71,28 @@ exports.findOne = (req, res) => {
         }
         return res.status(500).send({
             message: "Error retrieving user with id " + req.params.emails
+        });
+    });
+};
+
+// Find a single note with a noteId
+exports.findId = (req, res) => {
+    User.findById(req.params.userId)
+    .then(user => {
+        if(!user) {
+            return res.status(404).send({
+                message: "User not found with id " + req.params.userId
+            });            
+        }
+        res.send(user);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "User not found with id " + req.params.userId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving user with id " + req.params.userId
         });
     });
 };
@@ -138,19 +160,18 @@ exports.update = (req, res) => {
 
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
-    const emails = req.params.emails;
-    User.findOneAndDelete({"email":emails})
+    User.findByIdAndRemove(req.params.userId)
     .then(user => {
         if(!user) {
             return res.status(404).send({
-                message: "User not found with id " + req.params.emails
+                message: "User not found with id " + req.params.userId
             });
         }
         res.send({message: "User deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "User not found with id " + req.params.emails
+                message: "User not found with id " + req.params.userId
             });                
         }
         return res.status(500).send({

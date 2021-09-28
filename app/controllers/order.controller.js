@@ -228,23 +228,22 @@ exports.update = (req, res) => {
 
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
-    const userid = req.params.userid;
-    Order.findOneAndDelete({"userid":userid})
+    Order.findByIdAndRemove(req.params.orderId)
     .then(order => {
         if(!order) {
             return res.status(404).send({
-                message: "Order not found with id " + req.params.userid
+                message: "Order not found with id " + req.params.orderId
             });
         }
         res.send({message: "Order deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Order not found with id " + req.params.userid
+                message: "Order not found with id " + req.params.orderId
             });                
         }
         return res.status(500).send({
-            message: "Could not delete Order with id " + req.params.userid
+            message: "Could not delete Order with id " + req.params.orderId
         });
     });
 };

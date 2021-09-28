@@ -10,6 +10,9 @@ module.exports = (app) => {
     // Retrieve a single Note with noteId
     app.get('/users/:emails', users.findOne);
 
+    app.get('/users/id/:userId', users.findId);
+
+
     // Login Email
     app.post('/userss/login', users.loginEmail);
 
@@ -17,5 +20,5 @@ module.exports = (app) => {
     app.put('/users/:emails', users.update);
 
     // Delete a Note with noteId
-    app.delete('/users/:emails', users.delete);
+    app.delete('/users/:userId', users.delete);
 }
