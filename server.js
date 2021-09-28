@@ -44,6 +44,7 @@ require('./app/routes/user.routes.js')(app);
 require('./app/routes/order.routes.js')(app);
 
 // listen for requests
-app.listen(4000, () => {
-    console.log("Server is listening on port 4000");
-});
+const server = app.listen(process.env.PORT || 4000, () => {
+    const port = server.address().port;
+    console.log(`express is working on port ${port}`);
+})
